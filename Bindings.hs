@@ -7,18 +7,6 @@ import Display
 reshape :: ReshapeCallback
 reshape size = do 
   viewport $= (Position 0 0, size)
- 
---keyboardMouse :: IORef GLfloat -> IORef (GLfloat, GLfloat) -> KeyboardMouseCallback
---keyboardMouse a p key Down _ _ = case key of
---  (Char ' ') -> a $~! negate
---  (Char '+') -> a $~! (* 2)
---  (Char '-') -> a $~! (/ 2)
---  (SpecialKey KeyLeft ) -> p $~! \(x,y) -> (x-0.1,y)
---  (SpecialKey KeyRight) -> p $~! \(x,y) -> (x+0.1,y)
---  (SpecialKey KeyUp   ) -> p $~! \(x,y) -> (x,y+0.1)
---  (SpecialKey KeyDown ) -> p $~! \(x,y) -> (x,y-0.1)
---  _ -> return ()
---keyboardMouse _ _ _ _ _ _ = return ()
 
 idle :: IdleCallback
 idle = postRedisplay Nothing
@@ -33,10 +21,10 @@ keyboardMouse angle zoom campos key Down _ _ = case key of
     (Char '+') -> modVar zoom (*1.1)
     (Char '-') -> modVar zoom (*0.9)
     -- use sdfe to move the camera
-    (Char 's') -> modVar campos (mapFst (+0.1))
-    (Char 'd') -> modVar campos (mapFst (+(-0.1)))
-    (Char 'a') -> modVar campos (mapSnd (+0.1))
-    (Char 'q') -> modVar campos (mapSnd (+(-0.1)))
+    (SpecialKey KeyLeft ) -> modVar campos (mapFst (+0.1))
+    (SpecialKey KeyRight) -> modVar campos (mapFst (+(-0.1)))
+    (SpecialKey KeyDown ) -> modVar campos (mapSnd (+0.1))
+    (SpecialKey KeyUp   ) -> modVar campos (mapSnd (+(-0.1)))
     -- any other keys does nothing
     _ -> return ()
 keyboardMouse _ _ _ _ _ _ _ = return ()
