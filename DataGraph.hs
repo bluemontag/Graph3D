@@ -9,7 +9,7 @@ type GraphPoint = (GLfloat,GLfloat,GLfloat)
 
 
 graph1 :: Graph
-graph1 = buildG (1,10) [(1,2), 
+graph1 = buildG (0,10) [(1,2), 
                         (2,3), 
                         (3,1), (3,5), (3,4),
                         (4,1), (4,2), 
@@ -35,7 +35,27 @@ myPoints :: Int -> Int -> [ GraphPoint ]
 myPoints r1 r2 = points3D graph1 r1 r2
 
 myEdges :: Int -> Int -> [ (GraphPoint, GraphPoint) ]
-myEdges r1 r2 = [ (getPoint r1 r2 v1, getPoint r1 r2 v2) | (v1,v2) <- (edges graph1) ]
+myEdges r1 r2 = [ (getPoint r1 r2 v1, getPoint r1 r2 v2) | (v1,v2) <- (edges graph1) ] ++ unitCube
+
+origin = (0.0, 0.0, 0.0)
+
+plusX (x, y, z) = (x+1, y, z)
+plusY (x, y, z) = (x, y+1, z)
+plusZ (x, y, z) = (x, y, z+1)
+
+unitCube = [ (origin               ,     plusZ origin        ),    -- +z
+             (plusZ origin         ,     plusX $ plusZ origin),    -- +x
+             (plusX $ plusZ origin ,     plusX origin        ),    -- -z
+             (plusX origin         ,     origin              ),    -- -x
+             (origin               ,     plusX origin        ),    -- +x
+             (plusX origin         ,     plusY $ plusX origin),    -- +y
+             (plusY $ plusX origin ,     plusY origin        ),    -- -x
+             (plusY origin         ,     origin              ),    -- -y
+             (origin               ,     plusY origin        ),    -- +y
+             (plusY origin         ,     plusZ $ plusY origin),    -- +z
+             (plusZ $ plusY origin ,     plusZ origin        ),    -- -y
+             (plusZ origin         ,     origin              )     -- -z
+               ]      
 
 randomList :: Int -> [Float]
 randomList seed = randoms (mkStdGen seed) :: [Float]
