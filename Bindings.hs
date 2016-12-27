@@ -20,7 +20,7 @@ keyboardMouse angle zoom campos key Down _ _ = case key of
     -- use o and i to zoom
     (Char '+') -> modVar zoom (*1.1)
     (Char '-') -> modVar zoom (*0.9)
-    -- use sdfe to move the camera
+    -- use arrow keys to move the camera
     (SpecialKey KeyLeft ) -> modVar campos (mapFst (+0.1))
     (SpecialKey KeyRight) -> modVar campos (mapFst (+(-0.1)))
     (SpecialKey KeyDown ) -> modVar campos (mapSnd (+0.1))
